@@ -1,0 +1,475 @@
+Help file for !CDPlay
+~~~~~~~~~~~~~~~~~~~~~
+
+  Application : CDPlay
+  Purpose     : Filer Like CD Player
+  Version     : 1.17
+  Author      : Leo White
+  Date        : Wed 17th December 1997
+         
+© Leo White, 1996/97
+
+--------------------------------------------------------------------
+
+  CDPlay is a small program to be used for playing Audio CDs.  It 
+was written by me when I got a CD-ROM drive for my 4MB A5000 and 
+found out that the supplied CD Player took up 160K of memory.  After
+looking around and not finding any other player with decent features
+that used less then 96K of memory, I decided to write my own.
+
+  CDPlay attempts to display the track information in a style similar
+to the 'Fill info' option on a Filer Window.  I.e. it displays track
+number, name and size in the same sort of layout.
+
+  CDPlay can support multiply CDROM drives, enabling you to use just
+one program to control them all, and can store CD details on to disk
+and recall them next time you use that CD.
+
+  It also has function for random and program play, and the usual
+time display option.
+
+--------------------------------------------------------------------
+
+Instructions
+~~~~~~~~~~~~
+
+  CDPlay does not use an icon on the icon bar.  Instead you can 
+open and close the main window in two ways.  First is by adjust
+clicking on the CD Drive icon on the iconbar.  The second way is
+by a user configurable hotkey.  By default this is CTRL-SHIFT-TAB.
+
+  The main window consists of the CD Title, current track name,
+the CD controls, current track number, time, and a volume bar.
+
+
+  CD Controls
+  ~~~~~~~~~~~
+  
+  The control icons are, from left to right:
+  
+    R     - When depressed, selects Random play.
+    M     - When depressed, selects memory play
+
+    Previous - When 'Select' clicked, jumps to start of current track,
+               or begining of next track.
+               When 'Adjust' click, acts as rewind.
+    Pause/Play - Pauses or plays/restarts the CD
+    Next     - When 'Select' clicked, jumps to start of Next track.
+               When 'Adjust' clicked, acts as fast forwards.
+    Stop     - Stop
+    Eject    - When 'Select' clicked, attempts to eject or close the
+               CD drawer depending on current status.
+               When 'Adjust' clicked, forces the drive to eject, as
+               CDFS can't tell the difference between an empty drive,
+               and an open drawer drive.
+    
+
+  Time
+  ~~~~
+  
+  The time format can be toggled by clicking on the time part of the
+  icon.           
+  
+  Volume
+  ~~~~~~
+  
+  The volume can be changed by clicking on the appropiate part of
+  the bar, or by dragging the slider left and right.  
+  This option will only work on drives that support it, and with
+  a version of CDFS that supports it.
+  
+  Track Information
+  ~~~~~~~~~~~~~~~~~
+  
+  Track Number - Plays the appropiate track
+  Track Name   - Displays track name.  Click on the icon to edit it.
+  Time         - Shows the tracks total length.
+  
+
+  Menu
+  ~~~~
+  
+  Apart from the standard Info and Quit options, you also have,
+  
+  Program - Opens the program window.
+  Choices - Loads up the configuration program
+  Save    - Saves the current CD Details to disc.
+  
+ 
+  The Program Window
+  ~~~~~~~~~~~~~~~~~~
+  
+  First off, you CANNOT edit the list of tracks manually.  The only
+  reason the icon is writeable, is so that you can scroll the list
+  left and right.
+  
+  To create a program, select 'Program' and then click on the track numbers
+  in the main window to add them to the list.
+
+  The Choices Program
+  ~~~~~~~~~~~~~~~~~~~
+  
+  Most of these options are self explainatery.  But I list here a
+  few that may need explaining.
+  
+  CD matching offset
+    Different CDROM drives can report different unique numbers for
+    the same CD.  This option enables you to configure the boundaries
+    for matching CDs.  CDPlay will look for a CD in the range of
+    'Reported number +- offset'
+    This option is only useful if you have more than one CDROM drive,
+    or you have got a list of CD Details from someone else.
+    
+  Autodetect CD Change
+    CDPlay normally checks at regular intervals if the current CD that is 
+    in the drive is the one that it thinks it is playing. This does
+    not work with some CDFS drivers, and causes the CDPlay to rescan
+    the Listings file to match the CD.  If you have this problem, then
+    turn this option off.  The only problem you should then get is if
+    you change the CD whilst single tasking, as CDPlay will not spot the
+    change.
+    
+  Check if track is audio
+    Some CDFS drivers do not support this.  So if you find that CDPlay
+    refuses to play audio tracks, then try turning this option off.
+    
+  Hotkey code
+    This is the hotkey code that opens and closes the main window.
+    To change, click in the icon, and press the desired hotkey, and the
+    code should then change.
+    
+  Save current window position
+    When selected, the current location of the main window AT THE TIME
+    THAT YOU SAVE THE CONFIGURATION will be saved, and the window
+    will be opened at that location next time that you run CDPlay.
+    
+        
+
+  The Listing File
+  ~~~~~~~~~~~~~~~~
+  
+  This is where CDPlay stores its information on CDs.
+  
+  To merge the current Listing file with a new one.  Drag the new
+  Listing file onto CDPlay's main window.  The new Lising file
+  must be either set to text, or data.
+  
+  SMART CD+ users.  CDPlay can convert and use the Smart CD Version 2
+  listing files.  Just drag the Smart CD listing file onto CDPlay's main
+  window as mentioned above. 
+  
+  
+--------------------------------------------------------------------
+
+Things To Do
+~~~~~~~~~~~~
+
+  -Expand the memory play routines.  Allow saving of playlists etc.
+  -Add interactive help.  
+  -Rewrite at last part of the program as a module, so it works 
+   even whilst outside of the desktop.  i.e When playing games.
+   
+--------------------------------------------------------------------
+
+Program History
+~~~~~~~~~~~~~~~
+
+Version 0.01
+~~~~~~~~~~~~
+
+Created Template And Sprite files, And Copied Basic Code From 
+My First Attempt At A CD Player
+
+Version 0.02 Thu 12th September 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added Code To Make The Main Window Adjust Size And Create The Icons Needed
+To Hold The Track Names Etc.
+
+Version 0.03 Fri 13th September 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code Added To Detect Data CDs
+If You Try And Play A Data Track, CDPlay Performs A Filer_OpenDir On
+The Root Of The CD-ROM To Open The Filer Window
+Link List Finished To Hold All The Track Information
+Added Code To Generate The Playing Time Of The Track
+
+Version 0.04 Tue 17th September 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added Memory Routines
+Change Merge File Procedure So It Works With Native Files Properly
+
+Version 0.05 Sun 22nd September 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Tidied Up The Code
+Made Linked List Accessing More Memory Efficient And Faster
+
+Version 0.06 Sat 5th October 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Edited The Template Files To Make Them Conform To The RISC OS 3 Style
+Guide To A Greater Degree
+
+Version 0.07 Mon 7th October 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added Choices Window And Saving And Loading Of Choices File
+Added Routines To Check If The Listing And Choices Files Exist
+
+Version 0.08 Sat 12th October 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixed Bug, If The CD Was Stopped By CDPlay, And Started By Another Method,
+CDPlay Didn't Register The Fact That It Had Restarted
+Added Routines To Set The 'Listing' File To Protected So That It Can't
+Be Overwritten Or Deleted By Accident
+
+Version 0.09 Sun 3rd November 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixed Bug Which Stopped CDPlay Being Used On Multiple Drives
+Added Code To Detect Return And Escape Keypresses In The Choices
+Window, And Perform The Appropriate Action
+
+Version 1.00 Mon 04th November 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First Release Version, Finally Decided The Program Was In A Fit
+State To Be Released
+
+Version 1.01 Mon 22nd November 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixed Bug In Saving CD Listing Which Could Mess Up The Listing File
+
+Version 1.02 12 December 1996
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Different CDFS drivers (e.g. ATAPI, PSLCD) return different CD ID
+numbers.  Added hack to enable CDs entered into the listing under
+one driver, to be used by the other driver.
+Tidied up some of the code
+
+Version 1.03 4 January 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Rewrote CD Play routines, and window creation/handling routines,
+edited the sprite files and template files, resulting in a 25% 
+reduction in memory usage.  CDPlay now only requires 48k of 
+memory to run in, instead of 64k.
+Also changed the 'memory' mode.  Can now handle having the same
+track more than once in the Program.  Making it far more useful.
+Removed Listing Merge routines out of main program and into a
+separate application, which is called by CDPlay when needed.
+
+Version 1.04 Wed 15th January 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixed problem with wrong Sprites file being loaded for the current 
+mode.
+Added code to listing save routines to reduce chance of corrupted 
+listing files.
+Add check to make sure Random play doesn't play the same track 
+twice in a row.
+
+Version 1.05 Sun 19th January 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added Menu, removed Info, Choices etc. buttons from main window
+to the menu.
+Added volume bar.
+Added Auto Repeat CD option in the Choices Window.
+Tidied up the code slightly.
+Hopefully fixed problem which resulted in CDPlay crashing when using
+the Alsystems CDFS drivers.
+
+Version 1.06 Tue 11th February 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changed Track Playing routines.
+Altered the code which generated track time and CD playing time.
+Made sure the menu closed if the window was closed, unless adjust used.
+Added changing of icon background colour when got input focus.
+Added scrolling of window to keep caret in view.
+Changed the Volume bar code, so it doesn't mess up as much on a system
+which doesn't support it.
+
+Version 1.07 Sat 1st March 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removed configuration code and turned it into a separate application.
+Added new configuration options :
+  Disable CD Scanning
+  Warn If Track listings Not Saved
+  CDMatching Offset Number
+  Show Track Lengths
+  Added 2 new Time Formats
+  Save Volume On Exit
+  Auto Save CD Listing
+  Changing of the Hotkey Code
+Wimpslot was increased to 52K :(
+
+Version 1.08 Tue 11th March 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Reduced the wimpslot back down to 48k again :)
+Added better support for the auto save CD listings.
+Changed the volume support detection routines.  Hopefully
+will work slightly better now.
+Rewrote the Help file to cover the new Choices application
+Changed the layout of the Choices file so I could remove some
+code.
+  
+Version 1.09 Tue 18th March 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added two new configuration options to handle problems with
+some CDFS drivers.
+Fixed a bug that was causing CDPlay to crash occasionally when
+redrawing the volume bar.
+Changed code so it displays 'CD Scanning Disabled' instead of
+'Unknown' for the CD Title when that option is turned on.
+
+Version 1.10 Thu 20th March 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changed code so track names are empty if they are unknown
+Rewrote the Listings file merging program so it is more memory
+based processing.  Speeding it up considerable on larger files.
+Added a proper sprite for the Misc icon in the Choices program.
+Decided to release it if no bugs had crept in :)
+   
+Version 1.11 Tue 20th May 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixed bug.  If U saved when the drive was empty, the listing
+file got corrupted.  Now only saves if drive is not empty.
+Got the greying out of the 'Save' option in the menu working
+properly.
+
+Version 1.12 Sun 25th May 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Added Cue And rewind functions when U adjust click on the 
+'Next' 'Last' icons.
+
+Version 1.13 Tue 27th May 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fixed bug where the CD Title was being overwritten when a 
+program was created.
+Fixed bug in the configure program, which was causing the 
+machine to get stuck in an endless loop.
+
+Version 1.14 Wed 17th September 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Switched from playing single tracks to playing until end
+of disc, as playing single tracks caused problems on
+the 4x4 autochangers.
+Fixed the setting of the volume when CDPlay is first loaded.
+Tided up the code, removed some unwanted variables.
+The current track name is updated when it is changed.
+Fixed a problem where the track number occasionally got stuck
+on '117', causeing CDPlay to get 'stuck'
+
+Version 1.15 Mon 17th November 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removed the 'create random list' option, as it was a bit useless 
+really.
+Changed to using my own linked list functinos.
+Managed to reduce the (uncompressed) size of !RunImage by 15.6% :)
+Chopped the sprite files so they took up less space.
+Reduced the wimpslot size from 48K to 44K
+Changed the polling of NULL events from .5 seconds to 1 second
+Fixed the 'Warn if track listings are not saved' option, when
+quitting CDPlay was checking the 'Autosave CD Listing' flag
+instead.
+
+Version 1.16 Tue 25th November 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Some bugs creeped into CDPlay to do with redrawing the slider when
+the window had been scrolled down, and getting the window to
+to follow the caret correctly.  These have both been fixed.
+
+Version 1.17 Wed 17th December 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixed the auto disabling of the volume slider if the CDROM
+drive/driver doesn't support it.
+Fixed a small bug where the newline after the CD title was not
+always saved in the listings file.
+'Merged' the play and pause button into a single button that
+changes depending on the current status of the CDROM drive.
+
+
+----------------------------------------------------------------
+
+Disclaimer
+~~~~~~~~~~
+
+  This software is provided as is.  The author cannot take responsibility
+for any loss of data or any other problems consequent upon the use of
+this program.
+
+----------------------------------------------------------------
+
+Conditions of Use
+~~~~~~~~~~~~~~~~~
+
+  This software is freeware.  It may be freely distributed as long as no
+money is exchanged, apart from cost of distribution i.e. cost of discs,
+and that all the file are included with the possible exception
+of the Choices and Listing files.
+
+----------------------------------------------------------------
+
+Thanks go to my beta testers for helping to find bugs,
+suggesting improvements and generally forcing me to make
+it into a releasable product, rather than the underdeveloped
+version that I was quite happy with at the time ;)
+
+Thanks also go to Acorn's !CDPlayer whose large memory usage
+compelled me into writing this program in the first place.
+
+----------------------------------------------------------------
+
+Updates and Listing Files
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can get the latest version of CDPlay from my web page
+at 
+
+  http://www.ukc.ac.uk/php/lptw1
+  
+there is also a large Listing file here which contains > 1000 CD
+Details
+
+
+----------------------------------------------------------------
+
+Contacting The Author
+~~~~~~~~~~~~~~~~~~~~~
+
+  If you wish to contact me, e.g. to tell me about any bugs, 
+improvements etc. Or if you just want to send me large amounts of
+money :) (Well you never know), then you can use the following 
+methods.
+
+email : lptw1@ukc.ac.uk  (Should be valid for a few more years yet)
+
+or send mail to
+
+L P T White
+208 New Road
+West Parley
+Ferndown
+Dorset
+BH22 8EN
+
+Any mail arriving here will be sent on to me at University. So could take
+quite some time to reach me.
+   

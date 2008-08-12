@@ -1,0 +1,25 @@
+# Project:   CDPlay
+
+
+# Toolflags:
+CCflags = -c -depend !Depend -IC:  -throwback -Ospace -DHierProf_PROFILE 
+Linkflags = -aif -o $@ 
+ObjAsmflags = -depend !Depend -ThrowBack -Stamp -quit -CloseExec
+CMHGflags = 
+LibFileflags = -c -o $@
+Squeezeflags = -o $@
+AAsmflags = -depend !Depend -quit -CloseExec -To $@ -From
+DataToAOFflags = -depend !Depend -L _length -S -P -DP
+
+
+# Final targets:
+@.!RunImage:   @.o.main @.o.Buttons @.o.CDBitz @.o.Listing @.o.Window \
+        C:o.stubs @.o.LinkList  
+        Link $(Linkflags) @.o.main @.o.Buttons @.o.CDBitz @.o.Listing \
+        @.o.Window C:o.stubs @.o.Linklist 
+
+
+# User-editable dependencies:
+
+
+# Static dependencies:
