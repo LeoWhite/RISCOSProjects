@@ -1,0 +1,6 @@
+|!Boot file for !JPEGView
+|Version 0.01 Fri 19th May 2000
+
+Set JPEGView$Dir <Obey$Dir>
+Set Alias$@RunType_C85 Run <JPEGView$Dir>.!Run %%*0
+IconSprites <JPEGView$Dir>.!Sprites

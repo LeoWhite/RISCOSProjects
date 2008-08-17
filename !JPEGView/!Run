@@ -1,0 +1,16 @@
+|Run file for !JPEGView
+|Version 0.01 Fri 19th May 2000
+
+Set JPEGView$Dir <Obey$Dir>
+IconSprites <JPEGView$Dir>.!Sprites
+
+Set Alias$@RunType_C85 /<JPEGView$Dir>.!Run %%*0
+
+IF "<JPEGView$RunDir>" = "" THEN Set JPEGView$RunDir <JPEGView$Dir>.Source.!normal
+
+RMEnsure MemoryAllocator 0.01 RMLoad OreganMods:Malloc
+RMEnsure MemoryAllocator 0.01 Error Malloc module not found
+
+
+Wimpslot -min 128k -max 128K 
+Run <JPEGView$RunDir>.!RunImage
