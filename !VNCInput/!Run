@@ -1,0 +1,12 @@
+|Run file for !VNCInput
+|Version 0.01 Sat 13th November 1999
+
+Set VNCInput$Dir <Obey$Dir>
+IconSprites <VNCInput$Dir>.!Sprites
+
+RMEnsure UtilityModule 3.10 ERROR This application requires RiscOS 3.10 or later versions
+
+RMEnsure VNCInput 0.02 RMLoad <VNCInput$Dir>.Resources.VNCInput
+
+Wimpslot -min 44k -max 44K 
+Run <VNCInput$Dir>.!RunImage

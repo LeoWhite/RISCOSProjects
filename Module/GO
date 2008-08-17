@@ -1,0 +1,5 @@
+RMEnsure ExtBASICasm 1.76 Error Please load Extended basic
+RUN <obey$dir>.VNCInputSrc { > <Obey$dir>.Log }
+settype <obey$dir>.Log text
+
+Filer_run <obey$dir>.Log

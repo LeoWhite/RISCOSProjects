@@ -1,0 +1,146 @@
+AREA	ASM$$Code,Code
+
+; Defines
+IPPROTO_TCP = 6
+TCP_NODELAY = 1
+
+; Functions declared in this file
+EXPORT	ioctl
+EXPORT	disableNagle
+EXPORT	create
+EXPORT	close
+EXPORT	connect
+EXPORT	read
+EXPORT	write
+
+; Performs an Ioctl Call
+ioctl:
+	SWI	"XSocket_Ioctl"
+	MVNVS	R0,#0
+	MOVVC	R0,#0
+	MOVS	PC,LR
+
+; Allows the Nagle algorithm to be turned on and off
+disableNagle:
+	STMFD   SP!, {R3-R4, LR}
+	MOV	R3,R1
+	MOV	R4,R2
+	MOV	R1,#IPPROTO_TCP
+	MOV	R2,#TCP_NODELAY
+	SWI	"XSocket_Setsockopt"
+	MVNVS	R0,#0
+	MOVVC	R0,#0
+        LDMFD   SP!, {R3-R4, PC}
+
+; Creates a new socket
+create:
+	SWI	"XSocket_Creat"
+	MVNVS	R0,#0
+	MOVS	PC,LR
+
+; Closes the specified socket
+close:
+	SWI	"XSocket_Close"
+	MVNVS	R0,#0
+	MOVVC	R0,#0
+	MOVS	PC,LR
+
+; Attempts to connect to a machine
+connect:
+	SWI	"XSocket_Connect"
+	MVNVS	R0,#0
+	MOVVC	R0,#0
+	MOVS	PC,LR
+
+; Reads the specified amount of data from a socket
+read:
+	STMFD	SP!, {R1-R4, LR}
+
+	; Make a copy of amount to read
+	MOV	R3,R0
+	MOV	R4,R1
+
+	; Main While loop
+readwhile:
+        CMP	R2,#0
+	BLS	readexit
+
+	; Sets Socket and read data
+	MOV	R0,R3
+	SWI	"XSocket_Read"
+
+        ; Checks if zero
+	BVS	readexit
+
+        ; Checks if anything read in
+	CMP	R0, #0
+	BEQ	readcheckeof
+
+	; Update pointer and amount to read
+	ADD	R1,R1,R0
+	SUB	R2,R2,R0
+
+	; Loops to start of loop
+	B	readwhile
+
+readcheckeof:
+	; Check if any data was actually read in
+	CMP	R1, R4
+	MVNEQ	R0, #0
+	LDMEQFD	SP!, {R1-R4, PC}
+
+readexit:
+	; Work out total read
+	SUB	R0, R1, R4
+
+	; Exit
+	LDMFD	SP!, {R1-R4, PC}
+
+
+; Writes the specified amount of data to the socket
+write:
+	STMFD	SP!, {R1-R4, LR}
+
+	; Make a copy of amount to read
+	MOV	R3,R0
+	MOV	R4,R2
+
+	; Main While loop
+writewhile:
+        CMP	R2,#0
+	BLS	writeendwhile
+
+	; Sets Socket
+	MOV	R0,R3
+
+	; Writes data
+	SWI	"XSocket_Write"
+	BVS	writeendwhile
+
+        ; Checks if zero, set value and exit
+	CMPVC	R0,#0
+	BEQ	writeerror
+
+	; Update values
+	ADD	R1,R1,R0
+	SUB	R2,R2,R0
+
+	; Loops to start of loop
+	B	writewhile
+
+writeendwhile:
+	; Failed so set to -1
+	MVNVS	R0,#0
+
+	; Set R0 to Amount - Left
+	SUBVC	R0,R4,R2
+	LDMFD	SP!,{R1-R4, PC}
+
+writeerror:
+	; Close connection
+	MVN	R0,#0
+	LDMFD	SP!,{R1-R4, PC}
+
+
+
+

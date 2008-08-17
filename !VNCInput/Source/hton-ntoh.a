@@ -1,0 +1,16 @@
+AREA	ASM$$Code,Code
+
+	EXPORT	ntohl
+	EXPORT  htonl
+	EXPORT  ntohs
+	EXPORT  htons
+ntohs:
+htons:
+	MOV	R0,R0,LSL #16
+ntohl:
+htonl:
+	EOR	R1,R0,R0,ROR #16
+	BIC	R1,R1,#&FF0000
+	MOV	R0,R0,ROR #8
+	EOR	R0,R0,R1,LSR #8
+	MOVS	PC,LR

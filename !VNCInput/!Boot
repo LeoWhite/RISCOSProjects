@@ -1,0 +1,5 @@
+|!Boot file for !VNCINPUT
+|Version 0.01 Sat 13th November 1999
+
+Set VNCInput$Dir <Obey$Dir>
+IconSprites <VNCInput$Dir>.!Sprites

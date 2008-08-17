@@ -1,0 +1,59 @@
+AREA	ASM$$Code,Code
+
+	IMPORT	strcmp
+	EXPORT	wimpEnumerateTasks
+
+; On entry
+; R0 = Name of task to check for
+;
+; On Exit
+; R0 = 0 if not found, 1 if found
+wimpEnumerateTasks:
+	STMFD	SP!, {R1-R5, LR}
+
+	; Take copy of string pointer, and set R0 to 0
+	MOV	R4, R0
+	MOV	R0, #0
+
+while:
+	CMP	R0, #0
+	BLT	endWhile
+
+	; Get the next wimp task
+	ADR	R1, taskInfo
+	MOV	R2, #16
+	SWI	"XTaskManager_EnumerateTasks"
+	
+	; Check if a task was found
+	CMP	R0, #0
+	BLT	while
+
+	; Store index
+	MOV	R5, R0
+
+	; Check if it is our task
+	ADR	R0, taskInfo
+	LDR	R0. [R0, #4]
+	MOV	R1, R4
+	BL	strcmp
+	
+	; Check result
+	CMP	R0, #0
+	MOVEQ	R0, #1
+	BEQ	wETExit
+	
+	; Restore index
+	MOV	R0, R5
+
+	; Go to start of loop
+	B	while
+endWhile:
+	; Failed
+	MOV	R0, #0
+
+wETExit:	
+	LDMFD	SP!, {R1-R5, PC}
+
+taskInfo:
+	RESB	16
+

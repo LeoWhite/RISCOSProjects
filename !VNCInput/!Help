@@ -1,0 +1,139 @@
+Help file for !VNCInput
+~~~~~~~~~~~~~~~~~~~~~~~
+
+ Application  : VNCInput
+     Purpose  : A RiscOS VNC Input only Client for use with ORL's Remote
+                Frame Buffer protocol
+     Version  : 0.02
+      Author  : Leo White
+        Date  : Wed 29th May 2002
+
+© Leo White, 2000 - 2002
+
+--------------------------------------------------------------------
+
+  VNCInput is a Risc OS input only client for ORLs Remote Frame Buffer protocol.
+It can be used to connect up to any machine running a VNC server and
+passes mouse and keyboard events to the remote server.  Useful if you
+have 2 computers with monitors next to each other and you don't want
+to keep chaning keyboards/mice.
+
+
+Instructions
+~~~~~~~~~~~~
+
+  The iconbar icon.
+    Clicking select on this will open the Connect window if your not
+  already connected.  Otherwise it will do nothing.
+
+  The menu.
+
+    Info        - Opens the info window
+    Connect     - Opens the connect window to initiate a fresh connection.
+    Disconnect  - Disconnect the client.
+    Quit        - Quits VNCInput.
+
+  The main window
+
+    There is no main window. Once connected just move the mouse off the right
+  hand side of the screen, and input will then be passed over to the remote 
+  machine.  To restore input, move the mouse off the left hand side of the
+  remote machine and the mouse will reappear.
+
+  The connect window
+
+    This is where you initiate a connection to the server.  The
+    window will except address in both numeric and word format.
+    The address is then followed by a ':' and the number of the
+    display to connect up to (This is displayed when the server
+    is run on a Unix/Linux machine, and is usually 0 for a Windows
+    Server)
+    Next to this is a menu icon, which when clicked on will open
+    a menu containing the strings stored in the !VNCInput.hosts file.
+    When one of these menu items are clicked on, they are copied into
+    the server icon.  This saves you typing them out each time.
+    The format of the hosts file is the number of entries on the first
+    line, followed by the appropiate number of entries, each on a seperate
+    line.
+
+  The connecting Window.
+
+    This displays status messages about how the connection is
+    going and if it fails to connect will tell you why.
+
+  The password window.
+
+    This window pops up when you need to type in your password.
+    Once the password is typed in, press return to send it, and
+    the appropiate authentication routines will run.  I specifically
+    overwrite the password, so hopefully it will not be too easy to get
+    at :) Pressing Escape instead will cancel the connection process.
+
+--------------------------------------------------------------------
+
+  Known Bugs.
+
+  Apparently it will start up and never appear on the Icon bar, and you
+  have to Alt-Break to kill it off before you can do anything.  I've
+  not had this happen on my machine, so it may be some software clash.
+  If anyone has more details on this, then please let me know.
+  
+
+--------------------------------------------------------------------
+
+Program History
+~~~~~~~~~~~~~~~
+
+Version 0.01 06-06-98
+~~~~~~~~~~~~~~~~~~~~
+ - First release
+
+Version 0.02 Wed 29th May 2002
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ - Fixed bug in the module's mouse handler that was causing crashes
+   when run alongside Director.
+   
+
+----------------------------------------------------------------
+Acknowledgements
+~~~~~~~~~~~~~~~~
+
+VNCInput uses the C Swi interface written by Peter Naulls.
+This swi interface is much faster than the standard ones (Supposedly,
+I'm not about to rip them out and use kernel swi calls just to
+check *grins*) and thanks to Peter for writing it and allowing
+it to be used in Freeware and Shareware programs.
+
+Thanks to ORL for developing VNC (Virtual Network Computing) and
+releasing details of the Remote Frame Buffer protocol so I could
+write this program.
+
+----------------------------------------------------------------
+
+Disclaimer
+~~~~~~~~~~
+
+  This software is provided as is.  The author cannot take responsibility
+for any loss of data or any other problems consequent upon the use of
+this program.
+
+----------------------------------------------------------------
+
+Conditions of Use
+~~~~~~~~~~~~~~~~~
+
+  This software is freeware.  It may be freely distributed as long as no
+money is exchanged, apart from cost of distribution i.e. cost of discs,
+and that all the original file are included.
+
+----------------------------------------------------------------
+
+Contacting The Author
+~~~~~~~~~~~~~~~~~~~~~
+
+  If you wish to contact me, e.g. to tell me about any bugs,
+improvements etc. Or if you just want to send me large amounts of
+money :) (Well you never know), then you can email me at
+
+general email : leo@beyondthought.co.uk
