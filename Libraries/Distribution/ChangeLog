@@ -1,0 +1,11 @@
+Sun 12th January 2003
+~~~~~~~~~~~~~~~~~~~~~~
+  - Enabled a number of extra options to cjpeg and djpeg.  These include
+    support for progressive JPEGs and multi scan files.
+  - Fixed the djpeg help string for sprite output.
+  - Added the version number and date to the verbose output.
+
+Tue 10th December 2002
+~~~~~~~~~~~~~~~~~~~~~~
+ - Initial release
+ 
