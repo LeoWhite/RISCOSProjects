@@ -1,6 +1,17 @@
 section on software
 
 
+Software Table
+
+Name
+Description
+Changed
+File location
+File Size? (Can generate via PHP?)
+32 bit?
+
+
+
 section on models
 
 
