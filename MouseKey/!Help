@@ -1,0 +1,128 @@
+Help file for MouseKey
+~~~~~~~~~~~~~~~~~~~~~~
+
+  Application : MouseKey
+  Purpose     : Keyboad Mouse Emulator
+  Version     : 0.03
+  Author      : Leo White
+  Date        : Wed 04th March 2009
+         
+© Leo White, 1997-2009
+
+--------------------------------------------------------------------
+
+  MouseKey is a small module that allows you to control the mouse pointer
+and the mouse buttons using the keyboard.  This is my first attempt
+at a module that did anything useful :)  But it does manage to work,
+and could probably be improved on a lot.
+
+--------------------------------------------------------------------
+
+Instructions
+~~~~~~~~~~~~
+
+  The keyboard mouse controls consist of a 'trigger' key which when
+depressed activates the other keys which control the mouse.
+The current keys are:
+
+Trigger: Left Alt
+Up:      Keypad 5
+Down:    Keypad 2
+Left:    Keypad 1
+Right:   Keypad 3
+Select:  A
+Menu:    S
+Adjust:  D
+
+  The reason I'm using the keypad and not the cursor keys, is that 
+on the Risc PC these keys can clash when holding down two different
+keys at the same time.  Which you need to do when moving in a diagonal
+directon.
+
+  The keys can be changed by adjusting the appropiate variables at
+start of the source code and running the source code file to 
+produce a new module.  The number of the key is the 'low-level
+internal key number transmitted by the keyboard to the IOC device'
+which generates a key up/down event.  Look at page 1-156 in the Risc OS
+3 PRMs.  If U don't have the PRMs, erm then U can always mail me and I'll
+look it up for you.  Tho I'm sure someone somewhere has written up a list
+of these. There is also a speed variable, and this adjusts how far the
+pointer travels each time the key event is generated.
+
+  MouseKey has been tested on a Risc OS 3.5/Arm 610 and a Risc OS 3.7/SA
+machine.
+
+--------------------------------------------------------------------
+
+Things To Do
+~~~~~~~~~~~~
+
+  -Add a double/quadruple speed option
+  -Add *-commands to change the default key values.
+     
+--------------------------------------------------------------------
+
+Program History
+~~~~~~~~~~~~~~~
+
+Version 0.01
+~~~~~~~~~~~~
+
+Worked out how to emulate a mouse button click.
+Found out why all the other mouse emulating programs didn't
+work and located the solution.
+Managed to totally lock up my machine numerous times :)
+
+Version 0.02 Sun 15th June 1997
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Rearranged the code so there wasn't so much duplication in the
+key checking routine.  
+  Reduced the module size down to 732 bytes.
+  
+Version 0.03 Wed 04th March 2009
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updated to be 26/32 bit neutral
+  
+----------------------------------------------------------------
+
+Disclaimer
+~~~~~~~~~~
+
+  This software is provided as is.  The author cannot take responsibility
+for any loss of data or any other problems consequent upon the use of
+this program.
+
+----------------------------------------------------------------
+
+Conditions of Use
+~~~~~~~~~~~~~~~~~
+
+  This software is freeware.  It may be freely distributed as long as no
+money is exchanged, apart from cost of distribution i.e. cost of discs,
+and that all the files are left as they are.
+
+----------------------------------------------------------------
+
+Updates
+~~~~~~~
+
+You can get the latest version of mouseKey from my web page
+at 
+
+ http://www.mybigideas.co.uk
+
+----------------------------------------------------------------
+
+Contacting The Author
+~~~~~~~~~~~~~~~~~~~~~
+
+  If you wish to contact me, e.g. to tell me about any bugs, 
+improvements etc. Or if you just want to send me large amounts of
+money :) (Well you never know), then you can use the following 
+methods.
+
+email : leo.white@mybigideas.co.uk
+
+   
