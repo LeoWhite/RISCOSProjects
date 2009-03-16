@@ -24,7 +24,14 @@ $result = mysql_query("SELECT * FROM Software", $link);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     echo("<dl>");
-    echo("<dt><a href=\"" . $row["Location"] . "\">" . $row["Name"] . "</a></dt>");
+    echo("<dt><a href=\"" . $row["Location"] . "\">");
+   
+    // Do we have an image to display?
+    if("" != $row["Icon"]) {
+      echo("<img border=\"0\" src=\"" . $row["Icon"] . "\">");
+    }
+
+    echo($row["Name"] . "</a> Updated " . $row[Changed] . "</dt>");
     echo("<dd>" . $row["Description"] . "</dd>");
     echo("</dl>");
 }
