@@ -31,7 +31,14 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       echo("<img border=\"0\" src=\"" . $row["Icon"] . "\">");
     }
 
-    echo($row["Name"] . "</a> Updated " . $row[Changed] . "</dt>");
+    echo($row["Name"] . "</a> Updated " . $row[Changed]);
+    
+    // Do we have an image to display?
+    if(1 == $row["32Bit"]) {
+      echo("<img border=\"0\" src=\"/images/Iyonix.gif\">");
+    }
+
+    echo("</dt>");
     echo("<dd>" . $row["Description"] . "</dd>");
     echo("</dl>");
 }
