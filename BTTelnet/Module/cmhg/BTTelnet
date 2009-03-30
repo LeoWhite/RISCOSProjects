@@ -1,0 +1,25 @@
+; CMHG file for BTTelnet
+
+title-string: BTTelnet
+
+initialisation-code: initialise
+
+finalisation-code:   finalise
+
+help-string: BeyondThoughtTelnet 0.02 © Leo White
+
+error-chunk-base-number:  0x818400
+
+error-identifiers: failedClaim("BTTelnet failed to claim the events it requres."),
+                   failedInternet("No internet stack present."),
+		   failedMemory("Failed to allocate memory.")
+
+swi-chunk-base-number: 0x54CC0
+
+swi-decoding-table: BTTelnet, Open/swi_open, Close/swi_close,
+		    Read/swi_read, Write/swi_write,
+		    Status/swi_status, Configure/swi_configure
+
+event-handler: eventv/eventvHandler 19
+
+generic-veneers: callback/callbackHandler

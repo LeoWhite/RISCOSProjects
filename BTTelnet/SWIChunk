@@ -1,0 +1,18 @@
+On Sun 08 Oct, Leo White wrote:
+
+> Hi,
+> 
+>   I would like to register a module name and SWI chunk (details
+> attached).  Its for a module that provides telnet and SSL telnet
+> connections.
+
+SWI chunk 0x54cc0.
+
+regards
+
+Alan
+-- 
+
+
+
+
