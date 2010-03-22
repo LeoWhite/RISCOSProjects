@@ -1,0 +1,9 @@
+|Run file for !CDPlay
+|Version 0.02 Mon 17th November 1997
+Set CDPlay$Dir <Obey$Dir>
+RMEnsure UtilityModule 3.00 ERROR This application requires RiscOS 3 or later versions
+RMEnsure CDFS 2.20 ERROR You need CDFS 2.20 or greater to use this application
+RMEnsure CDFilter 0.07 RMLoad <CDPlay$Dir>.Resources.CDFilter
+IconSprites <CDPlay$Dir>.!Sprites
+Wimpslot -min 44k -max 64K
+Run <CDPlay$Dir>.!RunImage 2><Obey$Dir>.stderr

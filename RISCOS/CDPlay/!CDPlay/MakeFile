@@ -1,0 +1,44 @@
+# Project:   CDPlay
+
+
+# Toolflags:
+CCflags = -c -depend !Depend -IC:  -throwback -Ospace
+Linkflags = -aif -o $@ 
+ObjAsmflags = -depend !Depend -ThrowBack -Stamp -quit -CloseExec
+CMHGflags = 
+LibFileflags = -c -o $@
+Squeezeflags = -o $@
+AAsmflags = -depend !Depend -quit -CloseExec -To $@ -From
+DataToAOFflags = -depend !Depend -L _length -S -P -DP
+
+
+# Final targets:
+@.!RunImage:   @.o.main @.o.Buttons @.o.CDBitz @.o.Listing @.o.Window \
+        C:o.stubs @.o.LinkList  
+        Link $(Linkflags) @.o.main @.o.Buttons @.o.CDBitz @.o.Listing \
+        @.o.Window C:o.stubs @.o.LinkList 
+
+
+# User-editable dependencies:
+
+
+# Static dependencies:
+@.o.main:   <CDPlay$Dir>.c.main
+        cc $(ccflags) -o @.o.main <CDPlay$Dir>.c.main 
+@.o.Buttons:   <CDPlay$Dir>.c.Buttons
+        cc $(ccflags) -o @.o.Buttons <CDPlay$Dir>.c.Buttons 
+@.o.CDBitz:   <CDPlay$Dir>.c.CDBitz
+        cc $(ccflags) -o @.o.CDBitz <CDPlay$Dir>.c.CDBitz 
+@.o.Listing:   <CDPlay$Dir>.c.Listing
+        cc $(ccflags) -o @.o.Listing <CDPlay$Dir>.c.Listing 
+@.o.Window:   <CDPlay$dir>.c.Window
+        cc $(ccflags) -o @.o.Window <CDPlay$dir>.c.Window 
+@.o.LinkList:   <CDPlay$Dir>.c.LinkList
+        cc $(ccflags) -o @.o.LinkList <CDPlay$Dir>.c.LinkList 
+
+
+# Dynamic dependencies:
+o.main:	<CDPlay$Dir>.c.main
+o.main:	<CDPlay$Dir>.h.CDPlay
+o.main:	<CDPlay$Dir>.h.CDSWI's
+o.main:	C:h.Kernel

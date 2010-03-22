@@ -1,0 +1,4 @@
+|!Boot file for !CDPlay
+|Version 0.01 10th September 1996
+Set CDPlay$Dir <Obey$Dir>
+IconSprites <CDPlay$Dir>.!Sprites
