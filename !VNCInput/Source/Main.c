@@ -75,7 +75,7 @@ void mainTaskDispatch(CARD16 eventType, int *event) {
         pollTime = 50;
 
       /** Update poll time. */
-      pollTime += swi_wimp_r0(OS_ReadMonotonicTime, NULL);
+      pollTime += _swi(OS_ReadMonotonicTime, _RETURN(0));
     break;
 
     /** Handles mouse clicks. */
@@ -91,11 +91,11 @@ void mainTaskDispatch(CARD16 eventType, int *event) {
     break;
 
     /** Handle window open events. */
-    case eventOPEN:swi_wimp(Wimp_OpenWindow, &event[0]);
+    case eventOPEN:_swix(Wimp_OpenWindow, _IN(1), &event[0]);
     break;
 
     /** Handle window closing events. */
-    case eventCLOSE:swi_wimp(Wimp_CloseWindow, &event[0]);
+    case eventCLOSE:_swix(Wimp_CloseWindow, _IN(1), &event[0]);
     break;
 
     /** Handles User messages. */
@@ -124,7 +124,8 @@ void mainTaskDispatch(CARD16 eventType, int *event) {
 
 BOOL mainInitialise(void) {
   /** Sets up any resources or values required. */
-  int messages[3], regs[10];
+  int messages[3];
+  _kernel_oserror *error;
 
   /** Check if we are already loaded. */
   if(wimpEnumerateTasks(VNCTaskName))
@@ -135,48 +136,39 @@ BOOL mainInitialise(void) {
   messages[1] = messageMODECHANGE;
   messages[2] = 0;
 
-  /** Set up wimp init block. */
-  regs[0] = 310;
-  regs[1] = 0x4B534154;
-  regs[2] = (int)VNCTaskName;
-  regs[3] = (int)messages;
-
   /** Attempts to initialise tasks. */
-  if(!swi_error(Wimp_Initialise, regs)) {
-    /** Reads in the task handle. */
-    VNCTaskHandle = regs[1];
 
-    /** Check what version of RISC OS we are using. */
-    riscosVersion = swi_fast_r0(129, 0, 0xFF, OS_Byte);
-
-    /** Setup exit handler. */
-    if(atexit(mainVNCTaskExit))
-      return FALSE;
-
-    /** Create iconbar */
-    VNCBarIcon = windowCreateIconbar("!VNCInput", -1);
-
-    /** Initialises windows. */
-    if(!windowInit("<VNCInput$Dir>.Resources.Templates"))
-      return FALSE;
-
-    /** Creates the main menu. */
-    windowCreateMainMenu();
-
-    /** Create the hosts menu. */
-    buttonLoadMenu();
-
-    /** Sets up various mode values. */
-    windowModeChange();
-
-    /** Setup pollword. */
-    if(!mainSetupPollWord())
-      return FALSE;
+  if((error = _swix(Wimp_Initialise, _INR(0, 3) | _OUT(1), 310, 0x4B534154,
+                    (int)VNCTaskName, (int)messages, &VNCTaskHandle)) != NULL)
+  {
+    return FALSE;
   }
-  else {
-    /** Reports error. */
-    errorMessage = swi_get_error(&error);
-    mainReportError(errorMessage, error, 0);
+
+  /** Check what version of RISC OS we are using. */
+  riscosVersion = _swi(OS_Byte, _INR(0, 2) | _RETURN(0), 129, 0, 0xFF);
+
+  /** Setup exit handler. */
+  if(atexit(mainVNCTaskExit))
+    return FALSE;
+
+  /** Create iconbar */
+  VNCBarIcon = windowCreateIconbar("!VNCInput", -1);
+
+  /** Initialises windows. */
+  if(!windowInit("<VNCInput$Dir>.Resources.Templates"))
+    return FALSE;
+
+  /** Creates the main menu. */
+  windowCreateMainMenu();
+
+  /** Create the hosts menu. */
+  buttonLoadMenu();
+
+  /** Sets up various mode values. */
+  windowModeChange();
+
+  /** Setup pollword. */
+  if(!mainSetupPollWord()) {
     return FALSE;
   }
 
@@ -190,7 +182,7 @@ void mainVNCTaskExit(void) {
 #endif
 
   /** Closes down this wimp task. */
-  swi_fast(VNCTaskHandle, 0x4B534154, NULL, Wimp_CloseDown);
+  _swix(Wimp_CloseDown, _INR(0, 2), VNCTaskHandle, 0x4B534154, NULL);
 }
 
 int mainReportError(char *errorStr, int errorNum, int flags) {
@@ -202,20 +194,15 @@ int mainReportError(char *errorStr, int errorNum, int flags) {
   sprintf((char *)&errorBlock[1], "%s\0", errorStr);
 
   /** Generate error. */
-  return swi_fast_r1((int)errorBlock, flags, (int)VNCTaskName, Wimp_ReportError);
+  return _swi(Wimp_ReportError, _INR(0,2) | _RETURN(1), (int)errorBlock, flags, (int)VNCTaskName);
 }
 
 BOOL mainSetupPollWord(void) {
   /** Sets up the poll word. */
-  int regs[10];
 
   /** Gets modules private word address. */
-  regs[0] = 18;
-  regs[1] = (int)VNCTaskName;
-  swi(OS_Module, regs);
-  if(regs[4] != 0)
-    pollword = (void *)regs[4];
-  else
+  pollword = (int *)_swi(OS_Module, _INR(0,1) | _RETURN(4), 18, (int)VNCTaskName);
+  if(pollword == 0)
     return FALSE;
 
   /* Memcheck function call... Marks block as legal */
@@ -233,7 +220,7 @@ BOOL mainSetupPollWord(void) {
 
 int main(void) {
   /** Start of program. */
-  int eventBlock[64], regs[10];
+  int eventBlock[64];
 
   /* Sets up MemCheck stuff */
 # ifdef VNC_MemCheck
@@ -252,12 +239,8 @@ int main(void) {
     /** The main event loop. */
     while(!(VNCFlags & FLAG_QUIT)) {
       /** Calls wimp poll. */
-      regs[0] = WIMP_MASK;
-      regs[1] = (int)eventBlock;
-      regs[2] = pollTime;
-      regs[3] = (int)&pollword[POLL_POLLWORD];
-      swi(Wimp_PollIdle, regs);
-      mainTaskDispatch(regs[0], eventBlock);
+      _swix(Wimp_PollIdle, _INR(0, 3), WIMP_MASK, (int)eventBlock, pollTime, (int)&pollword[POLL_POLLWORD]);
+      mainTaskDispatch(WIMP_MASK, eventBlock);
     }
   }
   else {

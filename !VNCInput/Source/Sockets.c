@@ -90,7 +90,7 @@ struct hostent *resolveName(char *hostname) {
 
   /** Sets pointer to host name. */
   regs[0] = (int)hostname;
-  if(swi_error(Resolver_GetHost, regs))
+  if(_swi(Resolver_GetHost, _IN(0) | _OUT(0), (int)hostname, &regs[0]))
     return NULL;
 
   switch(regs[0]) {

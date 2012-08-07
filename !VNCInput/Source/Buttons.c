@@ -49,7 +49,7 @@ void buttonClick(int *event) {
       /** If not connected then open window. */
       if(!(VNCFlags & FLAG_CONNECTED)) {
         windowOpen(connectWindow, WINDOW_ON_TOP | WINDOW_CENTERED);
-        swi_wimp(Wimp_CloseWindow, &connectingWindow);
+        _swi(Wimp_CloseWindow, _IN(0), &connectingWindow);
         windowSetCaret(connectWindow, CONNECT_HOSTNAME);
       }
     }
@@ -79,7 +79,7 @@ void buttonMenuClick(int *event) {
       /** Opens the connect window. */
       case MENU_CONNECT:
         windowOpen(connectWindow, WINDOW_CENTERED | WINDOW_ON_TOP);
-        swi_wimp(Wimp_CloseWindow, &connectingWindow);
+        _swi(Wimp_CloseWindow, _IN(0), &connectingWindow);
         windowSetCaret(connectWindow, CONNECT_HOSTNAME);
       break;
 
@@ -94,7 +94,7 @@ void buttonMenuClick(int *event) {
   }
 
   /** Checks if need to reopen meu. */
-  swi_wimp(Wimp_GetPointerInfo, &ptr);
+  _swi(Wimp_GetPointerInfo, _IN(1), &ptr);
   if(ptr[2] == MOUSE_ADJUST) {
     /** Reopen the menu. */
     buttonOpenMenu(event);
@@ -110,7 +110,7 @@ void buttonConnectWindow(int *event) {
     break;
 
     /** Canceled. Close window. */
-    case CONNECT_CANCEL:swi_wimp(Wimp_CloseWindow, &connectWindow);
+    case CONNECT_CANCEL:_swi(Wimp_CloseWindow, _IN(0), &connectWindow);
     break;
 
     /** Click on menu button. */
@@ -132,11 +132,12 @@ void buttonKeyPress(int *event) {
       break;
 
       /** Escape pressed. */
-      case 27:swi_wimp(Wimp_CloseWindow, &connectWindow);
+      case 27:_swi(Wimp_CloseWindow, _IN(0), &connectWindow);
       break;
 
       /** Allow wimp to process key. */
-      default:swi_fast(event[EVENT_KEY_CODE], NULL, NULL, Wimp_ProcessKey);
+      default:
+       _swi(Wimp_ProcessKey, _IN(0), event[EVENT_KEY_CODE]);
       break;
     }
   }
@@ -149,20 +150,20 @@ void buttonKeyPress(int *event) {
 
       /** Escape pressed, abort. */
       case 27:
-        swi_wimp(Wimp_CloseWindow, &passwordWindow);
+        _swi(Wimp_CloseWindow, _IN(0), &passwordWindow);
         windowIconSetText(connectingWindow, CONNECTING_BOTTOM, "Connection Aborted");
         /** VNCCloseConnection(); */
       break;
 
       /** Default, allow wimp to process key. */
-      default:swi_fast(event[EVENT_KEY_CODE], NULL, NULL, Wimp_ProcessKey);
+      default:_swi(Wimp_ProcessKey, _IN(0), event[EVENT_KEY_CODE]);
       break;
     }
   }
   else {
     /** If keypress in MainWindow, then send to server. Otherwise process. */
     if(event[EVENT_WINDOW_HANDLE] != mainWindow)
-      swi_fast(event[EVENT_KEY_CODE], NULL, NULL, Wimp_ProcessKey);
+      _swi(Wimp_ProcessKey, _IN(0), event[EVENT_KEY_CODE]);
     else {
       VNCProcessWimpKey(event[EVENT_KEY_CODE]);
     }
@@ -186,7 +187,7 @@ void buttonOpenMenu(int *event) {
     regs[3] = 96 + MENU_NUM_ITEMS * 44;
   }
 
-  swi(Wimp_CreateMenu, regs);
+  _swi(Wimp_CreateMenu, _INR(0,3), regs[0], regs[1], regs[2], regs[3]);
 }
 
 void buttonLoadMenu(void) {

@@ -31,7 +31,7 @@ void VNCOpenConnection(void) {
   /** Checks for the display number. */
   if(strchr(tempString, ':') != NULL) {
     /** Close the connect window. */
-    swi_wimp(Wimp_CloseWindow, &connectWindow);
+    _swix(Wimp_CloseWindow, _IN(1), &connectWindow);
 
     /** Extracts the port number. */
     length = strcspn(tempString, ":");
@@ -86,7 +86,7 @@ void VNCCloseConnection(void) {
   socketBuff *nextBuff;
 
   /** Ensure main window is closed. */
-  swi_wimp(Wimp_CloseWindow, &mainWindow);
+  _swix(Wimp_CloseWindow, _IN(1), &mainWindow);
 
   /** Closes the socket. */
   if(VNCSocket != -1) {
@@ -228,7 +228,7 @@ void VNCAuthentication(void) {
     return;
 
   /** Close window and reads in password. */
-  swi_wimp(Wimp_CloseWindow, &passwordWindow);
+  _swix(Wimp_CloseWindow, _IN(1), &passwordWindow);
   strncpy((char *)&password, windowIconGetText(passwordWindow, PASSWORD_INPUT), VNCPasswordLength);
 
   /** Set zero terminator */
@@ -362,7 +362,7 @@ void VNCInitialiseDisplay(void) {
   VNCSetEncoding();
 
   /** Close the connecting window. */
-  swi_wimp(Wimp_CloseWindow, &connectingWindow);
+  _swix(Wimp_CloseWindow, _IN(1), &connectingWindow);
 
   /** Finished initialising. */
   VNCFlags |= FLAG_INITIALISED;
@@ -408,7 +408,7 @@ void VNCProcessMouse(void) {
   int regs[10];
 
   /** Reads in mouse position. */
-  swi_wimp(Wimp_GetPointerInfo, &regs);
+  _swix(Wimp_GetPointerInfo, _IN(1), &regs);
 
   /** Checks if its above our window. Shouldn't happen. */
   if(regs[3] != mainWindow)
@@ -615,7 +615,7 @@ void VNCProcessEdgeDetect(void) {
 
   if(VNCFlags & FLAG_WINDOW_OPEN) {
     /** Window is open, so close it. */
-    swi_wimp(Wimp_CloseWindow, &mainWindow);
+    _swi(Wimp_CloseWindow, _IN(1), &mainWindow);
 
     /** Turn off mouse and key watching. */
     pollword[POLL_CONFIG] &= ~(POLL_MOUSE_WATCH | POLL_KEY_WATCH);
@@ -650,11 +650,11 @@ void VNCBoundingBox(int x,  int y, short int width, short int height) {
   short int *values = (short int *)&block[1];
 
   /** Set the graphics origin. */
-  swi_fast(NULL, NULL, NULL, 256 + 29);
-  swi_fast(x & 0xFF, NULL, NULL, OS_WriteC);
-  swi_fast((x & 0xFF00) >> 8, NULL, NULL, OS_WriteC);
-  swi_fast(y & 0xFF, NULL, NULL, OS_WriteC);
-  swi_fast((y & 0xFF00) >> 8, NULL, NULL, OS_WriteC);
+  _swix(256 + 29, _INR(0, 2), NULL, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), x & 0xFF, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), (x & 0xFF00) >> 8, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), y & 0xFF, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), (y & 0xFF00) >> 8, NULL, NULL);
 
   /** Set up values. */
   block[0] = 1;
@@ -664,13 +664,12 @@ void VNCBoundingBox(int x,  int y, short int width, short int height) {
   values[3] = height;
 
   /** Calls swi. */
-  swi_fast(21, (int)block, NULL, OS_Word);
+  _swix(OS_Word, _INR(0, 2), 21, (int)block, NULL);
 
   /** Reset graphics origin. */
-  swi_fast(NULL, NULL, NULL, 256 + 29);
-  swi_fast(0, NULL, NULL, OS_WriteC);
-  swi_fast(0, NULL, NULL, OS_WriteC);
-  swi_fast(0, NULL, NULL, OS_WriteC);
-  swi_fast(0, NULL, NULL, OS_WriteC);
-
+  _swix(256 + 29, _INR(0, 2), NULL, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), 0, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), 0, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), 0, NULL, NULL);
+  _swix(OS_WriteC, _INR(0,2), 0, NULL, NULL);
 }

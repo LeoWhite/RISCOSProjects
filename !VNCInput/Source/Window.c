@@ -35,7 +35,10 @@ int windowCreateIconbar(char *spriteName, int position) {
   sprintf((char *)&iconBlock[6], "%s\0", spriteName);
 
   /** Get the icon handle. */
-  iconHandle = swi_wimp_r0(Wimp_CreateIcon, iconBlock);
+  if(_swix(Wimp_CreateIcon, _IN( 1) | _OUT(0), iconBlock, &iconHandle)) {
+    // Failed
+    return -1;
+  }
 
   /** Free up memory. */
   free(iconBlock);
@@ -55,9 +58,10 @@ BOOL windowInit(char *filePath) {
     free(templateBuffer);
 
   /** Open the template file. */
-  if(swi_error_fast(0, (int)filePath, NULL, Wimp_OpenTemplate)) {
+  if((error = _swi(Wimp_OpenTemplate, _INR(0, 2), 0, (int)filePath, NULL)) != NULL)
+  {
     /** Reports the error. */
-    mainReportError(swi_get_error(&error), error, 0);
+//    mainReportError(error->errmess, error->errnum, 0);
     return FALSE;
   }
 
@@ -121,40 +125,35 @@ BOOL windowInit(char *filePath) {
   free(indirectBuffer);
 
   /** Closes the template buffer. */
-  swi_wimp(Wimp_CloseTemplate, NULL);
+  _swix(Wimp_CloseTemplate, _IN(1), NULL);
 
   /** Successfully completed. */
   return TRUE;
 }
 
 int windowCalculateBuffer(char *name, BOOL bufferType) {
-  /** Returns the size of a templates buffer. */
-  int regs[10];
+  // Returns the size of buffer required to hold the specified window.
 
-  /** Reads template details. */
-  regs[0] = 0;
-  regs[1] = 0;
-  regs[4] = -1;
-  regs[5] = (int)&name[0];
-  regs[6] = 0;
-  swi(Wimp_LoadTemplate, regs);
-
-  /** Returns indirect size. */
-  if(bufferType == 0)
-    return regs[2];
+  // Checks which buffer size is required.
+  if(bufferType)
+    // template buffer
+    return _swi(Wimp_LoadTemplate, _INR(0, 1) | _INR(4, 6) | _RETURN(1), 0, 0, -1, name, 0);
   else
-    return regs[1];
+    // Indirect buffer size
+    return _swi(Wimp_LoadTemplate, _INR(0, 1) | _INR(4, 6) | _RETURN(2), 0, 0, -1, name, 0);
 }
 
 int windowCreate(char *name, int *regs) {
-  /** Creates the specified window. */
-  regs[0] = regs[6] = 0;
   regs[4] = -1;
   regs[5] = (int)&name[0];
-  swi(Wimp_LoadTemplate, regs);
+  regs[6] = 0;
+
+  /** Creates the specified window. */
+  _swix(Wimp_LoadTemplate, _INR(1, 6) | _OUT(2), regs[1], regs[2], regs[3], regs[4], regs[5], regs[6],
+                                                &regs[1]);
 
   /** Creates the window and returns the window handle. */
-  return swi_fast_r0(NULL, regs[1], NULL, Wimp_CreateWindow);
+  return _swi(Wimp_CreateWindow, _IN(1) | _RETURN(0), regs[1]);
 }
 
 char *windowIconGetText(CARD32 handle, CARD16 icon) {
@@ -209,18 +208,11 @@ void windowIconGetState(CARD32 handle, CARD16 icon, int *block) {
   /** Gets the icon state. */
   block[0] = handle;
   block[1] = icon;
-  swi_wimp(Wimp_GetIconState, block);
+  _swix(Wimp_GetIconState, _IN(1), block);
 }
 
 void windowIconSetState(CARD32 handle, CARD16 icon, CARD32 EORWord, CARD32 clearWord) {
-  /** Sets the icon state. */
-  int block[4];
-
-  block[0] = handle;
-  block[1] = icon;
-  block[2] = EORWord;
-  block[3] = clearWord;
-  swi_wimp(Wimp_SetIconState, &block);
+  _swix(Wimp_SetIconState, _BLOCK(1), handle, icon, EORWord, clearWord);
 }
 
 void windowCreateMainMenu(void) {
@@ -276,7 +268,7 @@ void windowOpen(CARD32 handle, CARD8 position) {
 
   /** Gets the window state. */
   state[0] = handle;
-  swi_wimp(Wimp_GetWindowState, &state);
+  _swix(Wimp_GetWindowState, _IN(1), state);
 
   /** Checks if the window should be centered. */
   if(position & WINDOW_CENTERED) {
@@ -302,7 +294,7 @@ void windowOpen(CARD32 handle, CARD8 position) {
   /** Checks if it should be positioned under the pointer. */
   if(position & WINDOW_UNDER_PTR) {
     /** Gets pointer info. */
-    swi_wimp(Wimp_GetPointerInfo, &ptr);
+    _swix(Wimp_GetPointerInfo, _IN(1), ptr);
 
     /** Adjusts window position. */
     state[3] = state[3] - state[1] + ptr[0];
@@ -335,35 +327,27 @@ void windowOpen(CARD32 handle, CARD8 position) {
     state[7] = -3;
 
   /** Opens the window. */
-  swi_wimp(Wimp_OpenWindow, &state);
+  _swix(Wimp_OpenWindow, _IN(1), state);
 }
 
 void windowSetCaret(CARD32 handle, int icon) {
-  /** Sets the caret position. */
-  int regs[10];
-
-  /** Sets up info. */
-  regs[0] = handle;
-  regs[1] = icon;
-  regs[4] = -1;
-  regs[5] = 0;
-  swi(Wimp_SetCaretPosition, regs);
+  _swix(Wimp_SetCaretPosition, _INR(0, 1) | _INR(4, 5), handle, icon, -1, 0);
 }
 
 void windowModeChange(void) {
   /** Handles mode changes. */
   char *spriteSuffix;
 
-  /** Recalculates X and Y eig values. */
-  xEig = swi_fast_r2(-1, 4, NULL, OS_ReadModeVariable);
-  yEig = swi_fast_r2(-1, 5, NULL, OS_ReadModeVariable);
+  // Recalculate X and Y eig values.
+  _swix(OS_ReadModeVariable, _INR(0, 1) | _OUT(2), -1, 4, (int *)&xEig);
+  _swix(OS_ReadModeVariable, _INR(0, 1) | _OUT(2), -1, 5, (int *)&yEig);
 
-  /** Reads in screens X and Y sizes. */
-  screenX = swi_fast_r2(-1, 11, NULL, OS_ReadModeVariable) + 1;
-  screenY = swi_fast_r2(-1, 12, NULL, OS_ReadModeVariable) + 1;
+  // Get screensize
+  _swix(OS_ReadModeVariable, _INR(0, 1) | _OUT(2), -1, 11, (int *)&screenX);
+  _swix(OS_ReadModeVariable, _INR(0, 1) | _OUT(2), -1, 12, (int *)&screenY);
 
   /** Checks if a double height mode. */
-  spriteSuffix = (char *)swi_fast_r0(2, NULL, NULL, Wimp_ReadSysInfo);
+  spriteSuffix = (char *)_swi(Wimp_ReadSysInfo, _IN(0), _RETURN(0));
   if(strcmp("24", spriteSuffix) == 0)
     doubleHeightMode = TRUE;
   else
@@ -375,17 +359,29 @@ void windowModeChange(void) {
 }
 
 void windowChangeExtent(CARD32 handle, CARD16 width, CARD16 height) {
-  /** Adjusts the size of the window. */
-  int newExtent[4];
-
-  /** Adjusts sizes. */
-  newExtent[0] = 0;
-  newExtent[2] = width << xEig;
-  newExtent[1] = -(height << yEig);
-  newExtent[3] = 0;
-
-  /** Changes the extent. */
-  swi_fast(handle, (int)&newExtent, NULL, Wimp_SetExtent);
+  // Changes the size of a window
+  _swix(Wimp_SetExtent, _IN(0) | _BLOCK(1), handle, 0, -(height << yEig), width << xEig, 0);
 }
 
+/*BOOL wimpEnumerateTasks(const char *appName) {
+  // Check if there is a copy of appName already running
+  CARD32 taskInfo[4], length;
+  INT32 index = 0;
 
+  // Is it a valid appname?
+  if(appName == NULL || ((length = strlen(appName) + 1) <= 1))
+    return FALSE;
+
+
+  // Goes through all the load tasks
+  while(index >= 0) {
+    index = _swi(TaskManager_EnumerateTasks, _INR(0, 2) | _RETURN(0), index, taskInfo, 16);
+
+    if(index >= 0 && memcmp((char *)taskInfo[1], appName, length) == 0)
+      return TRUE;
+  }
+
+  // Failed
+  return FALSE;
+}
+*/

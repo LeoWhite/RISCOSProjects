@@ -25,7 +25,6 @@ Revisions:      0.01 Sun 14th November 1999 - Creation
 #include <stdlib.h>
 #include <stdio.h>
 #include "kernel.h"
-#include "swi.h"
 #include "swis.h"
 #include "d3des.h"
 #include "socket.h"
@@ -407,6 +406,7 @@ int read(int Socket, void *Buffer, int Amount);
 int connect(int Socket, struct sockaddr *HostAddr, int NameLength);
 int write(int Socket, void *Buffer, int Amount);
 
-int wimpEnumerateTasks(char *taskName);
+int wimpEnumerateTasks(const char *appName);
+
 
 #endif  /* #ifndef __VNC_INPUT_H */

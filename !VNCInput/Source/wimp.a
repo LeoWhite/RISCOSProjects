@@ -33,7 +33,7 @@ while:
 
 	; Check if it is our task
 	ADR	R0, taskInfo
-	LDR	R0. [R0, #4]
+	LDR	R0, [R0, #4]
 	MOV	R1, R4
 	BL	strcmp
 	
