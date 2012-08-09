@@ -28,6 +28,8 @@ void buttonClick(int *event) {
 
   /** Checks if its a menu click. */
   if(event[EVENT_MOUSE_BUTTON] == MOUSE_MENU) {
+    mainReportError("mouse buttopn", ERROR_TEMPLATE, 0);
+
     /** Checks if an icon bar click. */
     if(event[EVENT_MOUSE_ICON] == VNCBarIcon && event[EVENT_MOUSE_WINDOW] == -2) {
       /** Open the iconbar menu. */

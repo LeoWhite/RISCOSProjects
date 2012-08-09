@@ -52,16 +52,17 @@ BOOL windowInit(char *filePath) {
   CARD16 bufferSize, tempSize;
   char *indirectBuffer = NULL, *templateBuffer = NULL;
   int regs[10];
+  _kernel_oserror *error;
 
   /** Checks there is no memory already allocated. */
   if(templateBuffer != NULL)
     free(templateBuffer);
 
   /** Open the template file. */
-  if((error = _swi(Wimp_OpenTemplate, _INR(0, 2), 0, (int)filePath, NULL)) != NULL)
+  if((error = _swix(Wimp_OpenTemplate, _INR(0, 2), 0, (int)filePath, NULL)) != NULL)
   {
     /** Reports the error. */
-//    mainReportError(error->errmess, error->errnum, 0);
+    mainReportError(error->errmess, error->errnum, 0);
     return FALSE;
   }
 
@@ -106,6 +107,7 @@ BOOL windowInit(char *filePath) {
 
   /** Creates the window. */
   infoWindow       = windowCreate("Info", regs);
+
   connectWindow    = windowCreate("Connect", regs);
   connectingWindow = windowCreate("Connecting", regs);
   passwordWindow   = windowCreate("Password", regs);
@@ -146,10 +148,10 @@ int windowCalculateBuffer(char *name, BOOL bufferType) {
 int windowCreate(char *name, int *regs) {
   regs[4] = -1;
   regs[5] = (int)&name[0];
-  regs[6] = 0;
+  regs[0] = regs[6] = 0;
 
   /** Creates the specified window. */
-  _swix(Wimp_LoadTemplate, _INR(1, 6) | _OUT(2), regs[1], regs[2], regs[3], regs[4], regs[5], regs[6],
+  _swix(Wimp_LoadTemplate, _INR(1, 6) | _OUT(1), regs[1], regs[2], regs[3], regs[4], regs[5], regs[6],
                                                 &regs[1]);
 
   /** Creates the window and returns the window handle. */

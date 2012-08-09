@@ -141,6 +141,7 @@ BOOL mainInitialise(void) {
   if((error = _swix(Wimp_Initialise, _INR(0, 3) | _OUT(1), 310, 0x4B534154,
                     (int)VNCTaskName, (int)messages, &VNCTaskHandle)) != NULL)
   {
+     mainReportError("Failed to call wimp_initialise .", ERROR_INIT, 0);
     return FALSE;
   }
 
@@ -148,15 +149,21 @@ BOOL mainInitialise(void) {
   riscosVersion = _swi(OS_Byte, _INR(0, 2) | _RETURN(0), 129, 0, 0xFF);
 
   /** Setup exit handler. */
-  if(atexit(mainVNCTaskExit))
+  if(atexit(mainVNCTaskExit))  {
+     mainReportError("Failed to to register atexit program.", ERROR_INIT, 0);
     return FALSE;
+  }
+
 
   /** Create iconbar */
   VNCBarIcon = windowCreateIconbar("!VNCInput", -1);
 
   /** Initialises windows. */
-  if(!windowInit("<VNCInput$Dir>.Resources.Templates"))
+  if(!windowInit("<VNCInput$Dir>.Resources.Templates")) {
+      mainReportError("Failed to to reinit windowsister atexit program.", ERROR_INIT, 0);
+
     return FALSE;
+  }
 
   /** Creates the main menu. */
   windowCreateMainMenu();
@@ -169,6 +176,8 @@ BOOL mainInitialise(void) {
 
   /** Setup pollword. */
   if(!mainSetupPollWord()) {
+     mainReportError("Failed to to setup pollword program.", ERROR_INIT, 0);
+
     return FALSE;
   }
 
