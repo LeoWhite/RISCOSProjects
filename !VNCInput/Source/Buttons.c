@@ -28,8 +28,6 @@ void buttonClick(int *event) {
 
   /** Checks if its a menu click. */
   if(event[EVENT_MOUSE_BUTTON] == MOUSE_MENU) {
-    mainReportError("mouse buttopn", ERROR_TEMPLATE, 0);
-
     /** Checks if an icon bar click. */
     if(event[EVENT_MOUSE_ICON] == VNCBarIcon && event[EVENT_MOUSE_WINDOW] == -2) {
       /** Open the iconbar menu. */
@@ -51,7 +49,7 @@ void buttonClick(int *event) {
       /** If not connected then open window. */
       if(!(VNCFlags & FLAG_CONNECTED)) {
         windowOpen(connectWindow, WINDOW_ON_TOP | WINDOW_CENTERED);
-        _swi(Wimp_CloseWindow, _IN(0), &connectingWindow);
+        _swi(Wimp_CloseWindow, _IN(1), &connectingWindow);
         windowSetCaret(connectWindow, CONNECT_HOSTNAME);
       }
     }
@@ -81,7 +79,7 @@ void buttonMenuClick(int *event) {
       /** Opens the connect window. */
       case MENU_CONNECT:
         windowOpen(connectWindow, WINDOW_CENTERED | WINDOW_ON_TOP);
-        _swi(Wimp_CloseWindow, _IN(0), &connectingWindow);
+        _swi(Wimp_CloseWindow, _IN(1), &connectingWindow);
         windowSetCaret(connectWindow, CONNECT_HOSTNAME);
       break;
 
@@ -112,7 +110,7 @@ void buttonConnectWindow(int *event) {
     break;
 
     /** Canceled. Close window. */
-    case CONNECT_CANCEL:_swi(Wimp_CloseWindow, _IN(0), &connectWindow);
+    case CONNECT_CANCEL:_swi(Wimp_CloseWindow, _IN(1), &connectWindow);
     break;
 
     /** Click on menu button. */
@@ -134,7 +132,7 @@ void buttonKeyPress(int *event) {
       break;
 
       /** Escape pressed. */
-      case 27:_swi(Wimp_CloseWindow, _IN(0), &connectWindow);
+      case 27:_swi(Wimp_CloseWindow, _IN(1), &connectWindow);
       break;
 
       /** Allow wimp to process key. */
@@ -152,7 +150,7 @@ void buttonKeyPress(int *event) {
 
       /** Escape pressed, abort. */
       case 27:
-        _swi(Wimp_CloseWindow, _IN(0), &passwordWindow);
+        _swi(Wimp_CloseWindow, _IN(1), &passwordWindow);
         windowIconSetText(connectingWindow, CONNECTING_BOTTOM, "Connection Aborted");
         /** VNCCloseConnection(); */
       break;

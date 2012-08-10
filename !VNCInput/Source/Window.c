@@ -151,8 +151,8 @@ int windowCreate(char *name, int *regs) {
   regs[0] = regs[6] = 0;
 
   /** Creates the specified window. */
-  _swix(Wimp_LoadTemplate, _INR(1, 6) | _OUT(1), regs[1], regs[2], regs[3], regs[4], regs[5], regs[6],
-                                                &regs[1]);
+  _swix(Wimp_LoadTemplate, _INR(0, 6) | _OUT(2), 0, regs[1], regs[2], regs[3], -1, name, 0,
+                                                &regs[2]);
 
   /** Creates the window and returns the window handle. */
   return _swi(Wimp_CreateWindow, _IN(1) | _RETURN(0), regs[1]);

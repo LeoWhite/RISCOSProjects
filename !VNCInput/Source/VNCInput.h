@@ -44,7 +44,7 @@ Revisions:      0.01 Sun 14th November 1999 - Creation
 
 /** Task name. */
 #define VNCTaskName              "VNCInput"
-#define VNCVersion               "0.02 (29-05-02)"
+#define VNCVersion               "0.03 (10-08-12)"
 
 /** Window positions. */
 #define WINDOW_CENTERED          (1 << 0)

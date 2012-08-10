@@ -247,9 +247,11 @@ int main(void) {
   if(mainInitialise()) {
     /** The main event loop. */
     while(!(VNCFlags & FLAG_QUIT)) {
+      int wimpEventType;
+
       /** Calls wimp poll. */
-      _swix(Wimp_PollIdle, _INR(0, 3), WIMP_MASK, (int)eventBlock, pollTime, (int)&pollword[POLL_POLLWORD]);
-      mainTaskDispatch(WIMP_MASK, eventBlock);
+      _swix(Wimp_PollIdle, _INR(0, 3) | _OUT(0), WIMP_MASK, (int)eventBlock, pollTime, (int)&pollword[POLL_POLLWORD], &wimpEventType);
+      mainTaskDispatch(wimpEventType, eventBlock);
     }
   }
   else {
