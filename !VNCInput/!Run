@@ -6,7 +6,7 @@ IconSprites <VNCInput$Dir>.!Sprites
 
 RMEnsure UtilityModule 3.10 ERROR This application requires RiscOS 3.10 or later versions
 
-RMEnsure VNCInput 0.02 RMLoad <VNCInput$Dir>.Resources.VNCInput
+RMEnsure VNCInput 0.03 RMLoad <VNCInput$Dir>.Resources.VNCInput
 
 Wimpslot -min 44k -max 44K 
 Run <VNCInput$Dir>.!RunImage
