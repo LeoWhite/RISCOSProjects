@@ -308,7 +308,7 @@ void windowOpen(CARD32 handle, CARD8 position) {
   /** Checks if should be opened full size. */
   if(position & WINDOW_FULL_SCREEN) {
     /** Sets min x and y. */
-    state[1] = screenX << xEig;
+    state[1] = (screenX << xEig);
     state[2] = 0;
     state[3] = (VNCConfig.width << xEig) + state[1];
     state[4] = (VNCConfig.height << yEig);
