@@ -1,0 +1,11 @@
+#TopMenu, #TopMenu:visited, #TopMenu:active, #TopMenu:link {
+	width:100%;
+	position:fixed;
+	padding: 0px 5px;
+}
+
+#TopMenu, #TopMenu A {
+	color: white;
+	background-color: black;
+	text-decoration: none
+}
