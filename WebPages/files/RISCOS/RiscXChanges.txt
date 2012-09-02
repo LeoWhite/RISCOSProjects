@@ -1,0 +1,63 @@
+History
+~~~~~~~
+
+  Version 0.07
+  ~~~~~~~~~~~~
+  
+  - Added 4, 16, and 32bit depth support. Access via the -depth argument
+  - Improved the efficency of screen updates in the multi tasking version
+    of RiscX. Thus giving a speed increase.
+  - Enabled LBX (Low Bandwidth X)
+
+  Version 0.06
+  ~~~~~~~~~~~~
+  
+  - Fixed single tasking mode... Which I accidently broke in the 
+    previous version...
+    
+  Version 0.05
+  ~~~~~~~~~~~~
+  
+  - Fixed a couple of redraw operations where the screen wasn't fully
+    updated in the multi tasking mode.
+  - When the mouse leaves the RiscX window it now releases any pressed
+    mouse buttons.  This stops the mouse buttons getting stuck down.
+  - Now attempts to use the taskwindow sleep upcall to stop it
+    pulling as much CPU time when idling.  Tho this doesn't seem
+    to have much affect under RISC OS 4.03
+    
+  Version 0.04
+  ~~~~~~~~~~~~
+  
+  - Fixed bug where pointer events were being sent even if the pointer 
+    hadn't moved.  This was causing any X client that grabbed the pointer
+    to be overwhelmed with X events, making it unusably slow.
+  - Added initial keyboard autorepeat support. Currently the delay and repeat
+    rate are hardcoded.
+  - Compiled up using the latest GCC and Unixlib, increasing the stability.
+  - Cleaned up the wait loop so it runs a bit faster.
+
+  Version 0.03
+  ~~~~~~~~~~~~
+  
+  - Tided up the source for the modules and put them into CVS
+  - Fixed a couple of initialisation bugs, so should now start up
+    more reliably.
+  - Fixed the 'mouse floating up the right hand side' bug.
+  
+  Version 0.02
+  ~~~~~~~~~~~~
+  
+  - Fixed the pseudo milli second counter (Was going 10 times too fast)
+  - Improve double clicks
+  - Moved the font directories into a path variable instead.
+  - Fixed problem with RiscXInput eating keys when RiscX didn't
+    have the focus
+  
+  Version 0.01
+  ~~~~~~~~~~~~
+  
+  - First release.
+
+  
+----------------------------------------------------------------
