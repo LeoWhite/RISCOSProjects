@@ -8,18 +8,18 @@
 
 <body>
 
-<div id="TopMenu">
-	<a href="#">Home</a> | <a href="html/whatsnew.php">What&apos;s New?</a> | <a href="html/software.php">Software</a> | <a href="https://plus.google.com/photos/107287498294316622336/albums/5758446343165527137">BigTrak</a>
-</div>
+<?php
 
+include 'menu.php'
 
-<!-- <a style="display: block; float: left" href="http://www.riscoslondonshow.co.uk"><img
-border="0" width="120" height="215"
-src="http://www.riscoslondonshow.co.uk/banner/banner2010v.png"></a>
-   -->
+?>
 
-<div style="padding: 50px 5px;">
+<div>
 Site under construction!<br/>
+
+<a style="display: block; float: right" href="http://www.riscoslondonshow.co.uk"><img
+border="0" width="120" height="215"
+src="http://www.riscoslondonshow.co.uk/bnnr/bnnr2012v.png"></a>
 
 I'm afraid I've been neglecting this site a bit!<br />
 

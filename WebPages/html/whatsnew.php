@@ -5,13 +5,9 @@
 </head>
 <body>
 
-<div id="TopMenu">
-	<a href="../index.html">Home</a> | <a href="whatsnew.php">What&apos;s New?</a> | <a href="software.php">Software</a> | <a href="https://plus.google.com/photos/107287498294316622336/albums/5758446343165527137">BigTrak</a>
-</div>
-
-<div style="padding: 1em 0px 0px 0px;"></div>
-
 <?php
+include '../menu.php'
+
 $link = @mysql_connect("db1748.oneandone.co.uk", "dbo274106622", "5MqwnprJ") or
 die(mysql_error());
 
